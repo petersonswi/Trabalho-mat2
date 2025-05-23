@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Os sites que eu mais acesso</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #ffeb3b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+
+    .link-secreto {
+      margin: 10px;
+      padding: 12px 24px;
+      background-color: #1a1a1a;
+      color: #ffeb3b;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 18px;
+      width: 260px;
+    }
+
+    .link-secreto:hover {
+      background-color: #333;
+      transform: scale(1.05);
+    }
+
+    .link-secreto img {
+      width: 24px;
+      height: 24px;
+    }
+
+    #container-links {
+      display: none;
+      flex-direction: column;
+    }
+
+    #botao-revelar {
+      background-color: #ffeb3b;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    #botao-revelar:hover {
+      background-color: #fff176;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Os sites que eu mais acesso</h1>
+
+  <button id="botao-revelar">Revelar Meus Sites</button>
+
+  <div id="container-links">
+    <a href="https://www.youtube.com/" class="link-secreto">
+      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Logo">
+      YouTube
+    </a>
+    <a href="https://g.co/kgs/Nx6jmVJ" class="link-secreto">
+      <img src="https://cdn-icons-png.flaticon.com/512/2702/2702602.png" alt="Google Logo">
+      Google
+    </a>
+    <a href="https://mail.google.com/mail/mu/mp/40/#tl/priority/%5Esmartlabel_personal" class="link-secreto">
+      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Wikipedia Logo">
+      Gmail
+    </a>
+  </div>
+
+  <script>
+    const botao = document.getElementById("botao-revelar");
+    const links = document.getElementById("container-links");
+
+    botao.addEventListener("click", () => {
+      links.style.display = "flex";
+      botao.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>
