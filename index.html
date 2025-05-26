@@ -2,102 +2,303 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Os sites que eu mais acesso</title>
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Meus Sites Favoritos</title> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet"> <style>
+    :root {
+      --cor-fundo-escuro: #1a1a2e; /* Darker background */
+      --cor-fundo-claro: #f0f2f5;  /* Light background */
+      --cor-texto-escuro: #e0e0e0; /* Lighter text for dark mode */
+      --cor-texto-claro: #333333;  /* Darker text for light mode */
+      --cor-destaque: #6a0572;    /* Purple accent */
+      --cor-destaque-hover: #9a06a6; /* Lighter purple on hover */
+      --cor-link-fundo: #2c2c54;  /* Darker link background */
+      --cor-link-fundo-hover: #3d3d6e; /* Lighter link background on hover */
+      --sombra-leve: rgba(0, 0, 0, 0.2);
+      --sombra-intensa: rgba(0, 0, 0, 0.4);
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: #ffeb3b;
+      font-family: 'Orbitron', sans-serif; /* Applied Orbitron to body for overall theme */
+      background-color: var(--cor-fundo-escuro);
+      color: var(--cor-texto-escuro);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh; /* Use min-height for better content handling */
       margin: 0;
       text-align: center;
+      transition: background-color 0.4s ease, color 0.4s ease; /* Smooth theme transition */
+      padding: 20px;
+      box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    /* Light Mode */
+    body.light-mode {
+      --cor-fundo-escuro: #f0f2f5;
+      --cor-texto-escuro: #333333;
+      --cor-destaque: #007bff;
+      --cor-destaque-hover: #0056b3;
+      --cor-link-fundo: #ffffff;
+      --cor-link-fundo-hover: #e9ecef;
+      --sombra-leve: rgba(0, 0, 0, 0.1);
+      --sombra-intensa: rgba(0, 0, 0, 0.2);
     }
 
     h1 {
-      margin-bottom: 20px;
-      font-size: 32px;
+      margin-bottom: 30px; /* Increased margin for better spacing */
+      font-size: 38px; /* Slightly larger heading */
+      text-shadow: 2px 2px 5px var(--sombra-intensa); /* More pronounced shadow */
+      color: var(--cor-destaque); /* Use accent color for heading */
+      transition: color 0.4s ease;
     }
 
+    /* Theme Toggle Button */
+    #toggle-tema {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: transparent;
+      border: none;
+      font-size: 28px; /* Larger icon */
+      cursor: pointer;
+      color: var(--cor-texto-escuro);
+      transition: transform 0.3s ease, color 0.4s ease;
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    #toggle-tema:hover {
+      transform: scale(1.1);
+      color: var(--cor-destaque-hover);
+    }
+
+    /* Link Styles */
     .link-secreto {
-      margin: 10px;
-      padding: 12px 24px;
-      background-color: #1a1a1a;
-      color: #ffeb3b;
+      margin: 15px auto; /* Centered with auto, increased margin */
+      padding: 15px 30px; /* More padding */
+      background-color: var(--cor-link-fundo);
+      color: var(--cor-texto-escuro);
       text-decoration: none;
-      border-radius: 8px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      border-radius: 10px; /* Softer corners */
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      font-size: 18px;
-      width: 260px;
+      gap: 15px; /* Increased gap */
+      font-size: 20px; /* Larger font size */
+      max-width: 320px; /* Max width for better control on larger screens */
+      width: 90%; /* Responsive width */
+      box-shadow: 0 4px 8px var(--sombra-leve);
+      outline: none; /* Remove default outline */
     }
 
-    .link-secreto:hover {
-      background-color: #333;
-      transform: scale(1.05);
+    .link-secreto:hover,
+    .link-secreto:focus { /* Added focus state for accessibility */
+      background-color: var(--cor-link-fundo-hover);
+      transform: translateY(-3px) scale(1.02); /* Subtle lift and slight scale */
+      box-shadow: 0 6px 12px var(--sombra-intensa);
+      color: var(--cor-destaque); /* Highlight text on hover/focus */
     }
 
-    .link-secreto img {
-      width: 24px;
-      height: 24px;
+    .link-secreto:active {
+      transform: translateY(1px) scale(0.98); /* Press effect */
+      box-shadow: 0 2px 4px var(--sombra-leve);
     }
 
+    .link-secreto svg { /* Using SVG icons for better scalability and styling */
+      width: 28px; /* Larger icons */
+      height: 28px;
+      fill: currentColor; /* Inherit color from parent text */
+      flex-shrink: 0;
+      transition: fill 0.3s ease;
+    }
+
+    /* Container for Links */
     #container-links {
-      display: none;
+      display: none; /* Initially hidden */
       flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.6s ease; /* Slower fade-in */
+      width: 100%;
+      max-width: 400px; /* Consistent max-width for container */
     }
 
-    #botao-revelar {
-      background-color: #ffeb3b;
-      color: #000;
+    #container-links.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* Buttons */
+    .action-button { /* General style for action buttons */
+      background-color: var(--cor-destaque);
+      color: var(--cor-texto-escuro);
       border: none;
-      padding: 10px 20px;
+      padding: 12px 25px; /* More padding */
       border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-      margin-bottom: 20px;
+      font-size: 18px; /* Larger font */
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      margin-top: 25px; /* More space above */
+      box-shadow: 0 4px 8px var(--sombra-leve);
+      outline: none;
     }
 
-    #botao-revelar:hover {
-      background-color: #fff176;
+    .action-button:hover,
+    .action-button:focus {
+      background-color: var(--cor-destaque-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px var(--sombra-intensa);
+    }
+
+    .action-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px var(--sombra-leve);
+    }
+
+    #botao-obrigado {
+      display: none; /* Initially hidden */
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Apply fadeIn to links when container is shown */
+    #container-links.show .link-secreto {
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 32px;
+      }
+      .link-secreto {
+        font-size: 18px;
+        padding: 12px 25px;
+        max-width: 300px;
+      }
+      .link-secreto svg {
+        width: 24px;
+        height: 24px;
+      }
+      .action-button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      .link-secreto {
+        font-size: 16px;
+        padding: 10px 20px;
+        max-width: 90%; /* Occupy more width on small screens */
+        gap: 10px;
+      }
+      .link-secreto svg {
+        width: 20px;
+        height: 20px;
+      }
+      .action-button {
+        font-size: 14px;
+        padding: 8px 18px;
+      }
+      #toggle-tema {
+        font-size: 24px;
+        top: 15px;
+        right: 15px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Os sites que eu mais acesso</h1>
+  <button id="toggle-tema" aria-label="Alternar modo claro/escuro">
+    <span id="icone-tema">🌙</span>
+  </button>
 
-  <button id="botao-revelar">Revelar Meus Sites</button>
+  <h1>Meus Sites Favoritos</h1>
 
-  <div id="container-links">
-    <a href="https://www.youtube.com/" class="link-secreto">
-      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube Logo">
+  <button id="botao-revelar" class="action-button" aria-expanded="false" aria-controls="container-links">
+    Revelar Meus Sites
+  </button>
+
+  <div id="container-links" aria-live="polite" aria-atomic="true">
+    <a href="https://www.youtube.com/" class="link-secreto" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M19.615 3.184a2.88 2.88 0 0 0-2.026-2.03C15.583 0.6 12 0.6 12 0.6s-3.583 0-5.588.553a2.88 2.88 0 0 0-2.027 2.03A29.928 29.928 0 0 0 4 8c0 1.597.11 3.223.386 4.816a2.88 2.88 0 0 0 2.027 2.03C8.417 15.4 12 15.4 12 15.4s3.583 0 5.588-.553a2.88 2.88 0 0 0 2.026-2.03A29.928 29.928 0 0 0 20 8c0-1.597-.11-3.223-.385-4.816zM10 11.538V6.462L15.2 9l-5.2 2.538z"/>
+      </svg>
       YouTube
     </a>
-    <a href="https://g.co/kgs/Nx6jmVJ" class="link-secreto">
-      <img src="https://cdn-icons-png.flaticon.com/512/2702/2702602.png" alt="Google Logo">
+    <a href="https://www.google.com/" class="link-secreto" target="_blank" rel="noopener noreferrer" aria-label="Google">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M21.35 11.1h-9.21v2.92h5.49c-.23 1.43-1.58 4.2-5.49 4.2-3.31 0-6.01-2.74-6.01-6.11s2.7-6.11 6.01-6.11c1.88 0 3.13.8 3.86 1.49l2.63-2.54C16.59 5.18 14.56 4.3 12 4.3c-5.51 0-10 4.48-10 10s4.49 10 10 10c5.77 0 9.59-4.04 9.59-9.74 0-.66-.01-1.2-.23-1.66z"/>
+      </svg>
       Google
     </a>
-    <a href="https://mail.google.com/mail/mu/mp/40/#tl/priority/%5Esmartlabel_personal" class="link-secreto">
-      <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Wikipedia Logo">
+    <a href="https://mail.google.com/" class="link-secreto" target="_blank" rel="noopener noreferrer" aria-label="Gmail">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5H20zm0 12H4V8l8 5 8-5v10z"/>
+      </svg>
       Gmail
     </a>
-  </div>
+    <button id="botao-voltar" class="action-button" style="display: none;">Voltar</button> </div>
 
-  <script>
-    const botao = document.getElementById("botao-revelar");
-    const links = document.getElementById("container-links");
+  <button id="botao-obrigado" class="action-button" style="display: none;">Obrigado!</button> <script>
+    const botaoRevelar = document.getElementById('botao-revelar');
+    const containerLinks = document.getElementById('container-links');
+    const botaoObrigado = document.getElementById('botao-obrigado');
+    const botaoVoltar = document.getElementById('botao-voltar');
+    const toggleTema = document.getElementById('toggle-tema');
+    const iconeTema = document.getElementById('icone-tema');
+    const body = document.body;
 
-    botao.addEventListener("click", () => {
-      links.style.display = "flex";
-      botao.style.display = "none";
+    // Function to update theme icon
+    function atualizarIconeTema() {
+      const temaAtual = body.classList.contains('light-mode') ? 'claro' : 'escuro';
+      iconeTema.textContent = temaAtual === 'claro' ? '☀️' : '🌙';
+    }
+
+    // Toggle theme on button click
+    toggleTema.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      const tema = body.classList.contains('light-mode') ? 'light' : 'dark';
+      localStorage.setItem('preferenciaTema', tema); // Save preference
+      atualizarIconeTema();
+    });
+
+    // Load theme preference on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const preferencia = localStorage.getItem('preferenciaTema');
+      if (preferencia === 'light') {
+        body.classList.add('light-mode');
+      }
+      atualizarIconeTema(); // Set initial icon
+    });
+
+    // Reveal links
+    botaoRevelar.addEventListener('click', () => {
+      containerLinks.classList.add('show');
+      botaoObrigado.style.display = 'inline-block';
+      botaoVoltar.style.display = 'inline-block';
+      botaoRevelar.style.display = 'none';
+      botaoRevelar.setAttribute('aria-expanded', 'true');
+    });
+
+    // Hide links and show reveal button
+    botaoVoltar.addEventListener('click', () => {
+      containerLinks.classList.remove('show');
+      botaoObrigado.style.display = 'none';
+      botaoVoltar.style.display = 'none';
+      botaoRevelar.style.display = 'inline-block';
+      botaoRevelar.setAttribute('aria-expanded', 'false');
     });
   </script>
 
