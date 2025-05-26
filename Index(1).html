@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Os sites que eu mais acesso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cor-fundo: #000;
+      --cor-texto: #ffeb3b;
+      --cor-fundo-botao: #4caf50;
+      --cor-fundo-botao-hover: #66bb6a;
+      --cor-foco: #fff176;
+      --cor-texto-foco: #000;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      padding: 20px;
+    }
+
+    body.claro {
+      --cor-fundo: #ffffff;
+      --cor-texto: #222222;
+      --cor-fundo-botao: #00796b;
+      --cor-fundo-botao-hover: #009688;
+      --cor-foco: #3333ff;
+      --cor-texto-foco: #ffffff;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 32px;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    #toggle-tema {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      background-color: transparent;
+      color: var(--cor-texto);
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    #toggle-tema:hover {
+      transform: scale(1.1);
+    }
+
+    .link-secreto {
+      margin: 10px auto;
+      padding: 12px 24px;
+      background-color: #1a1a1a;
+      color: var(--cor-texto);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 18px;
+      max-width: 260px;
+      animation: fadeIn 0.5s ease forwards;
+      outline-offset: 4px;
+    }
+
+    .link-secreto:hover,
+    .link-secreto:focus {
+      background-color: #333;
+      transform: scale(1.05);
+      outline: 3px solid var(--cor-foco);
+      outline-offset: 6px;
+      color: var(--cor-texto-foco);
+    }
+
+    .link-secreto:active {
+      transform: scale(0.98);
+      background-color: #222;
+    }
+
+    .link-secreto svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--cor-texto);
+      flex-shrink: 0;
+      transition: fill 0.3s ease;
+    }
+
+    .link-secreto:hover svg,
+    .link-secreto:focus svg {
+      fill: var(--cor-foco);
+    }
+
+    #container-links {
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    #container-links.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    #botao-revelar {
+      background-color: var(--cor-texto);
+      color: var(--cor-fundo);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+      box-shadow: 0 0 8px var(--cor-texto);
+      outline-offset: 4px;
+    }
+
+    #botao-revelar:hover,
+    #botao-revelar:focus {
+      background-color: var(--cor-foco);
+      color: var(--cor-texto-foco);
+      outline: 3px solid var(--cor-foco);
+    }
+
+    #botao-obrigado {
+      background-color: var(--cor-fundo-botao);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 18px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      display: none;
+      box-shadow: 0 4px 8px rgba(76, 175, 80, 0.6);
+      outline-offset: 4px;
+      position: relative;
+    }
+
+    #botao-obrigado:hover,
+    #botao-obrigado:focus {
+      background-color: var(--cor-fundo-botao-hover);
+      box-shadow: 0 6px 12px rgba(102, 187, 106, 0.8);
+      outline: 3px solid var(--cor-foco);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(15px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .link-secreto {
+        max-width: 90%;
+        font-size: 16px;
+        padding: 10px 18px;
+      }
+      #botao-revelar {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+      #botao-obrigado {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button id="toggle-tema" title="Alternar tema">
+    <span id="icone-tema">🌙</span>
+  </button>
+
+  <h1>Os sites que eu mais acesso</h1>
+
+  <button id="botao-revelar" aria-expanded="false" aria-controls="container-links">Revelar Meus Sites</button>
+
+  <div id="container-links" aria-live="polite" aria-atomic="true">
+    <a href="https://www.youtube.com/" class="link-secreto" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M19.615 3.184a2.88 2.88 0 0 0-2.026-2.03C15.583 0.6 12 0.6 12 0.6s-3.583 0-5.588.553a2.88 2.88 0 0 0-2.027 2.03A29.928 29.928 0 0 0 4 8c0 1.597.11 3.223.386 4.816a2.88 2.88 0 0 0 2.027 2.03C8.417 15.4 12 15.4 12 15.4s3.583 0 5.588-.553a2.88 2.88 0 0 0 2.026-2.03A29.928 29.928 0 0 0 20 8c0-1.597-.11-3.223-.385-4.816zM10 11.538V6.462L15.2 9l-5.2 2.538z"/>
+      </svg>
+      YouTube
+    </a>
+    <a href="https://g.co/kgs/Nx6jmVJ" class="link-secreto" target="_blank" rel="noopener noreferrer" aria-label="Google">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M21.35 11.1h-9.21v2.92h5.49c-.23 1.43-1.58 4.2-5.49 4.2-3.31 0-6.01-2.74-6.01-6.11s2.7-6.11 6.01-6.11c1.88 0 3.13.8 3.86 1.49l2.63-2.54C16.59 5.18 14.56 4.3 12 4.3c-5.51 0-10 4.48-10 10s4.49 10 10 10c5.77 0 9.59-4.04 9.59-9.74 0-.66-.01-1.2-.23-1.66z"/>
+      </svg>
+      Google
+    </a>
+  </div>
+
+  <a href="#" id="botao-obrigado" title="Obrigado por visitar!">Obrigado!</a>
+
+  <script>
+    const botaoRevelar = document.getElementById('botao-revelar');
+    const containerLinks = document.getElementById('container-links');
+    const botaoObrigado = document.getElementById('botao-obrigado');
+    const toggleTema = document.getElementById('toggle-tema');
+    const iconeTema = document.getElementById('icone-tema');
+    const body = document.body;
+
+    function atualizarIconeTema() {
+      const temaAtual = body.classList.contains('claro') ? 'claro' : 'escuro';
+      iconeTema.textContent = temaAtual === 'claro' ? '☀️' : '🌙';
+    }
+
+    toggleTema.addEventListener('click', () => {
+      body.classList.toggle('claro');
+      const tema = body.classList.contains('claro') ? 'claro' : 'escuro';
+      localStorage.setItem('preferenciaTema', tema);
+      atualizarIconeTema();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const preferencia = localStorage.getItem('preferenciaTema');
+      if (preferencia === 'claro') {
+        body.classList.add('claro');
+      }
+      atualizarIconeTema();
+    });
+
+    botaoRevelar.addEventListener('click', () => {
+      containerLinks.classList.add('show');
+      botaoObrigado.style.display = 'inline-block';
+      botaoRevelar.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
